@@ -1,26 +1,32 @@
 #root {
-  max-width: 1280px;
+  /* max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  position: relative;
+  position: relative; */
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+    background-color: white;
 }
   
-  .box {
-      width: 100px;
-      height: 75px;
-      border: 2px solid black;
-      position: relative;
-  
-      &.one {
-          top: 0px;
-      }
-  
-      &.two {
-          top: 200px;
-      }
-  
-      &.three {
-          left: 200px;
-      }
-  }
+.box {
+    width: 100px;
+    height: 75px;
+    border: 2px solid black;
+    position: relative;
+
+    &.one {
+        top: 0px;
+    }
+
+    &.two {
+        top: 200px;
+    }
+
+    &.three {
+        left: 200px;
+    }
+}

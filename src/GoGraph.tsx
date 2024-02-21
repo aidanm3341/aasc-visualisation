@@ -43,9 +43,7 @@ export function GoGraph({ nodes, relationships }: Props) {
             width: '1250px',
             height: '750px',
             backgroundColor: '#DAE4E4'
-        }}
-        >
-            graph
+        }}>
         </div>
     )
 }
