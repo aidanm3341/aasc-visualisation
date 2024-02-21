@@ -1,6 +1,6 @@
 import * as joint from "@joint/core";
 import { useEffect } from 'react';
-import { Relationship, Node } from './Types';
+import { Relationship, Node, ConnectsRelationship } from './Types';
 import { DirectedGraph } from '@joint/layout-directed-graph';
 
 interface Props {
@@ -14,19 +14,25 @@ let recentRect: joint.shapes.standard.Rectangle;
 
 function createRelationships(graph: joint.dia.Graph, relationships: Relationship[]) {
     relationships.forEach(relationship => {
-        const link = new joint.shapes.standard.Link();
-        link.appendLabel({
-            attrs: {
-                text: {
-                    text: relationship.relationshipType
-                }
-            }
-        });
-
-        link.source(rects[relationship.source]);
-        link.target(rects[relationship.target]);
-        link.addTo(graph);
+        if (relationship.relationshipType === 'connects') {
+            createConnectsRelationship(graph, relationship)
+        }
     });
+}
+
+function createConnectsRelationship(graph: joint.dia.Graph, relationship: ConnectsRelationship) {
+    const link = new joint.shapes.standard.Link();
+    link.appendLabel({
+        attrs: {
+            text: {
+                text: relationship.relationshipType
+            }
+        }
+    });
+
+    link.source(rects[relationship.parties.source]);
+    link.target(rects[relationship.parties.destination]);
+    link.addTo(graph);
 }
 
 function createNodes(graph: joint.dia.Graph, nodes: Node[]) {
@@ -84,7 +90,7 @@ function applyLayout(graph: joint.dia.Graph) {
         nodeSep: 150,
         edgeSep: 180,
         rankDir: "TB",
-        marginX: 300,
+        // marginX: 300,
         marginY: 200
     });
 }
@@ -97,8 +103,8 @@ export function JointGraph({ nodes, relationships }: Props) {
         const paper = new joint.dia.Paper({
             el: document.getElementById('joint'),
             model: graph,
-            width: 1600,
-            height: 800,
+            width: 2600,
+            height: 1000,
             gridSize: 1,
             cellViewNamespace: namespace,
             background: {

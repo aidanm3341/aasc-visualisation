@@ -15,12 +15,22 @@ function App() {
     });
 
     const relationships: Relationship[] = apiGateway.relationships.map(relationship => {
-        return {
-            source: relationship.parties.source,
-            target: relationship.parties.destination,
-            relationshipType: relationship['relationship-type'],
-            // protocol: relationship.protocol
+        if (relationship['relationship-type'] === 'connects') {
+            return {
+                relationshipType: 'connects',
+                uniqueId: relationship['uniqueId']!,
+                protocol: relationship['protocol']!,
+                authentication: relationship['authentication']!,
+                parties: relationship['parties']!
+            } as Relationship
+        } else {
+            return {} as Relationship
         }
+        // return {
+        //     source: relationship.parties.source,
+        //     target: relationship.parties.destination,
+        //     relationshipType: relationship['relationship-type'],
+        // }
     })
 
     return (
