@@ -1,7 +1,7 @@
 import './App.css'
 // import { GoGraph } from './GoGraph';
 import { JointGraph } from './JointGraph';
-import { Node, Relationship } from './Types'
+import { ComposedOfRelationship, ConnectsRelationship, DeployedInRelationship, InteractsRelationship, Node, Relationship } from './Types'
 import * as apiGateway from './assets/api-gateway.json';
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
             name: node.name,
             class: 'box',
             uniqueId: node.uniqueId,
+            nodeType: node['node-type'],
             extras: node
         }
     });
@@ -22,15 +23,28 @@ function App() {
                 protocol: relationship['protocol']!,
                 authentication: relationship['authentication']!,
                 parties: relationship['parties']!
-            } as Relationship
+            } as ConnectsRelationship
+        } else if (relationship['relationship-type'] === 'deployed-in') {
+            return {
+                relationshipType: 'deployed-in',
+                uniqueId: relationship['uniqueId'],
+                parties: relationship['parties']
+            } as DeployedInRelationship
+        } else if (relationship['relationship-type'] === 'interacts') {
+            return {
+                relationshipType: 'interacts',
+                uniqueId: relationship['uniqueId'],
+                parties: relationship['parties']
+            } as InteractsRelationship
+        } else if (relationship['relationship-type'] === 'composed-of') {
+            return {
+                relationshipType: 'composed-of',
+                uniqueId: relationship['uniqueId'],
+                parties: relationship['parties']
+            } as ComposedOfRelationship
         } else {
             return {} as Relationship
         }
-        // return {
-        //     source: relationship.parties.source,
-        //     target: relationship.parties.destination,
-        //     relationshipType: relationship['relationship-type'],
-        // }
     })
 
     return (

@@ -2,6 +2,7 @@ export interface Node {
     name: string, 
     class: string,
     uniqueId: string,
+    nodeType: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     extras?: {[field: string]: any}
 }
