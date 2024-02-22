@@ -3,7 +3,7 @@ import { Node } from './Types';
 
 export function createRectangleNode(node: Node) {
     return new joint.shapes.standard.Rectangle({
-        z: node.nodeType === 'internal-network' ? 1 : 2
+        z: 2
     })
         .resize(200, 40)
         .attr({
@@ -13,6 +13,25 @@ export function createRectangleNode(node: Node) {
             label: {
                 text: node.name,
                 fill: 'black'
+            }
+        })
+        .prop('extra', node.extras);
+}
+
+export function createInternalNetworkNode(node: Node) {
+    return new joint.shapes.standard.Rectangle({
+        z: 1
+    })
+        .resize(200, 40)
+        .attr({
+            body: {
+                strokeDasharray: '10,2'
+            },
+            label: {
+                text: node.name,
+                fill: 'black',
+                'y-alignment': 'top',
+                'text-decoration': 'bold'
             }
         })
         .prop('extra', node.extras);

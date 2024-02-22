@@ -2,7 +2,7 @@ import * as joint from "@joint/core";
 import { useEffect } from 'react';
 import { Relationship, Node } from './Types';
 import { DirectedGraph } from '@joint/layout-directed-graph';
-import { createCircleNode, createRectangleNode } from './ShapeFactory';
+import { createCircleNode, createInternalNetworkNode, createRectangleNode } from './ShapeFactory';
 import { createComposedOfRelationship, createConnectsRelationship, createDeployedInRelationship, createInteractsRelationship } from './RelationshipFactory';
 
 interface Props {
@@ -34,6 +34,10 @@ function createNodes(graph: joint.dia.Graph, nodes: Node[]) {
             const circle = createCircleNode(node);
             circle.addTo(graph);
             shapes[node.uniqueId] = circle;
+        } else if (node.nodeType === 'internal-network') {
+            const rect = createInternalNetworkNode(node);
+            rect.addTo(graph);
+            shapes[node.uniqueId] = rect;
         } else {
             const rect = createRectangleNode(node);
             rect.addTo(graph);

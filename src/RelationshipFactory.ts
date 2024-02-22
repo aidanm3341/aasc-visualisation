@@ -23,24 +23,13 @@ export function createDeployedInRelationship(shapes: {[name: string]: joint.shap
         target.embed(shapes[source]);
         target.attributes.z = 1;
         shapes[source].attributes.z = 2;
-
-        const padding = 10;
-        shapes[source].fitParent({
-            deep: true,
-            padding: {
-                top: padding,
-                left: padding,
-                right: padding,
-                bottom: padding
-            }
-        });
     });
 }
 
 export function createComposedOfRelationship(graph: joint.dia.Graph, shapes: {[name: string]: joint.shapes.standard.Rectangle}, relationship: ComposedOfRelationship) {
-    const target = shapes[relationship.parties.container]
+    const source = shapes[relationship.parties.container]
 
-    relationship.parties.nodes.map((source: string) => {
+    relationship.parties.nodes.map((target: string) => {
         const link = new joint.shapes.standard.Link();
         link.appendLabel({
             attrs: {
@@ -50,8 +39,8 @@ export function createComposedOfRelationship(graph: joint.dia.Graph, shapes: {[n
             }
         });
 
-        link.source(shapes[source]);
-        link.target(target);
+        link.source(source);
+        link.target(shapes[target]);
         link.addTo(graph);
     });
 }
