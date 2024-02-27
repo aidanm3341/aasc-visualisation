@@ -1,35 +1,10 @@
 import * as joint from "@joint/core";
 import { ComposedOfRelationship, ConnectsRelationship, DeployedInRelationship, InteractsRelationship } from './Types';
 
-export function createConnectsRelationship(graph: joint.dia.Graph, shapes: {[name: string]: joint.shapes.standard.Rectangle}, relationship: ConnectsRelationship) {
-    const link = new joint.shapes.standard.Link();
-    link.appendLabel({
-        attrs: {
-            text: {
-                text: relationship.relationshipType
-            }
-        }
-    });
+export class RelationshipFactory {
+    constructor(private graph: joint.dia.Graph, private shapes: {[name: string]: joint.shapes.standard.Rectangle}) {}
 
-    link.source(shapes[relationship.parties.source]);
-    link.target(shapes[relationship.parties.destination]);
-    link.addTo(graph);
-}
-
-export function createDeployedInRelationship(shapes: {[name: string]: joint.shapes.standard.Rectangle}, relationship: DeployedInRelationship) {
-    const target = shapes[relationship.parties.container]
-
-    relationship.parties.nodes.map(source => {
-        target.embed(shapes[source]);
-        target.attributes.z = 1;
-        shapes[source].attributes.z = 2;
-    });
-}
-
-export function createComposedOfRelationship(graph: joint.dia.Graph, shapes: {[name: string]: joint.shapes.standard.Rectangle}, relationship: ComposedOfRelationship) {
-    const source = shapes[relationship.parties.container]
-
-    relationship.parties.nodes.map((target: string) => {
+    public createConnectsRelationship(relationship: ConnectsRelationship) {
         const link = new joint.shapes.standard.Link();
         link.appendLabel({
             attrs: {
@@ -38,28 +13,57 @@ export function createComposedOfRelationship(graph: joint.dia.Graph, shapes: {[n
                 }
             }
         });
-
-        link.source(source);
-        link.target(shapes[target]);
-        link.addTo(graph);
-    });
-}
-
-export function createInteractsRelationship(graph: joint.dia.Graph, shapes: {[name: string]: joint.shapes.standard.Rectangle}, relationship: InteractsRelationship) {
-    const source = shapes[relationship.parties.actor]
-
-    relationship.parties.nodes.map(target => {
-        const link = new joint.shapes.standard.Link();
-        link.appendLabel({
-            attrs: {
-                text: {
-                    text: relationship.relationshipType
-                }
-            }
+    
+        link.source(this.shapes[relationship.parties.source]);
+        link.target(this.shapes[relationship.parties.destination]);
+        link.addTo(this.graph);
+    }
+    
+    public createDeployedInRelationship(relationship: DeployedInRelationship) {
+        const target = this.shapes[relationship.parties.container]
+    
+        relationship.parties.nodes.map(source => {
+            target.embed(this.shapes[source]);
+            target.attributes.z = 1;
+            this.shapes[source].attributes.z = 2;
         });
-
-        link.source(source);
-        link.target(shapes[target]);
-        link.addTo(graph);
-    });
+    }
+    
+    public createComposedOfRelationship(relationship: ComposedOfRelationship) {
+        const source = this.shapes[relationship.parties.container]
+    
+        relationship.parties.nodes.map((target: string) => {
+            const link = new joint.shapes.standard.Link();
+            link.appendLabel({
+                attrs: {
+                    text: {
+                        text: relationship.relationshipType
+                    }
+                }
+            });
+    
+            link.source(source);
+            link.target(this.shapes[target]);
+            link.addTo(this.graph);
+        });
+    }
+    
+    public createInteractsRelationship(relationship: InteractsRelationship) {
+        const source = this.shapes[relationship.parties.actor]
+    
+        relationship.parties.nodes.map(target => {
+            const link = new joint.shapes.standard.Link();
+            link.appendLabel({
+                attrs: {
+                    text: {
+                        text: relationship.relationshipType
+                    }
+                }
+            });
+    
+            link.source(source);
+            link.target(this.shapes[target]);
+            link.addTo(this.graph);
+        });
+    }
 }

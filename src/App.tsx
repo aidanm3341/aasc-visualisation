@@ -1,8 +1,7 @@
 import './App.css'
-// import { GoGraph } from './GoGraph';
 import { JointGraph } from './JointGraph';
 import { ComposedOfRelationship, ConnectsRelationship, DeployedInRelationship, InteractsRelationship, Node, Relationship } from './Types'
-import * as apiGateway from './assets/api-gateway.json';
+import * as apiGateway from './assets/traderx-calm.json';
 
 function App() {
     const nodes: Node[] = apiGateway.nodes.map(node => {
@@ -23,29 +22,29 @@ function App() {
                 protocol: relationship['protocol']!,
                 authentication: relationship['authentication']!,
                 parties: relationship['parties']!
-            } as ConnectsRelationship
+            } as ConnectsRelationship;
         } else if (relationship['relationship-type'] === 'deployed-in') {
             return {
                 relationshipType: 'deployed-in',
                 uniqueId: relationship['uniqueId'],
                 parties: relationship['parties']
-            } as DeployedInRelationship
+            } as DeployedInRelationship;
         } else if (relationship['relationship-type'] === 'interacts') {
             return {
                 relationshipType: 'interacts',
                 uniqueId: relationship['uniqueId'],
                 parties: relationship['parties']
-            } as InteractsRelationship
+            } as InteractsRelationship;
         } else if (relationship['relationship-type'] === 'composed-of') {
             return {
                 relationshipType: 'composed-of',
                 uniqueId: relationship['uniqueId'],
                 parties: relationship['parties']
-            } as ComposedOfRelationship
+            } as ComposedOfRelationship;
         } else {
-            return {} as Relationship
+            throw new Error('Unknown relationship type!');
         }
-    })
+    });
 
     return (
         <div style={{
@@ -54,10 +53,9 @@ function App() {
             justifyContent: 'center',
             alignItems: 'center'
         }}>
-            {/* <GoGraph nodes={nodes} relationships={relationships}/> */}
             <JointGraph nodes={nodes} relationships={relationships} />
         </div>
-    )
+    );
 }
 
-export default App
+export default App;

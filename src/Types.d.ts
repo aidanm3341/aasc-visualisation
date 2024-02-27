@@ -3,8 +3,7 @@ export interface Node {
     class: string,
     uniqueId: string,
     nodeType: string,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    extras?: {[field: string]: any}
+    extras?: {[field: string]: unknown}
 }
 
 export type Relationship = InteractsRelationship | ConnectsRelationship | DeployedInRelationship | ComposedOfRelationship;
