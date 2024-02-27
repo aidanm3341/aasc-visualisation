@@ -9,7 +9,7 @@ export class RelationshipFactory {
         link.appendLabel({
             attrs: {
                 text: {
-                    text: relationship.relationshipType
+                    text: relationship.relationshipType + '\n[' + relationship.protocol + ']'
                 }
             }
         });
